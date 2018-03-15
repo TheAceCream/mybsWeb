@@ -20,12 +20,12 @@ public class ItemServiceImpl implements ItemService{
     private ItemDao itemDao;
 
     @Override
-    public Item getItemById(Long id) {
+    public ItemDto getItemById(Long id) {
         return itemDao.getItemById(id);
     }
 
     @Override
-    public List<Item> findList(ItemDto itemDto) {
+    public List<ItemDto> findList(ItemDto itemDto) {
         return itemDao.findList(itemDto);
     }
 
@@ -47,9 +47,27 @@ public class ItemServiceImpl implements ItemService{
     }
 
     @Override
-    public int updateItemStoreAndSale(Item item) {
+    public int delItem(Long id) {
+        return itemDao.delItem(id);
+    }
 
-        return 0;
+    /**
+     * 商品卖出后
+     * 库存 -1
+     * 销售量 +1
+     * @param itemId
+     * @return
+     */
+    @Override
+    public int updateItemStoreAndSale(Long itemId) {
+        ItemDto itemDto = itemDao.getItemById(itemId);
+        itemDto.setSale(itemDto.getSale()+1);
+        if (!itemDto.getStore().equals(0)){
+            itemDto.setStore(itemDto.getStore()-1);
+        }else {
+            return 0;
+        }
+        return 1;
     }
 
 

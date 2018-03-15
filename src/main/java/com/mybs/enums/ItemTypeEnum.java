@@ -3,7 +3,7 @@ package com.mybs.enums;
 /**
  * Created by AceCream on 2018/3/15.
  */
-public enum ItemType {
+public enum ItemTypeEnum {
 
     PHONES(101,"手机"),
     GAME_LAB(102,"游戏本"),
@@ -25,18 +25,18 @@ public enum ItemType {
             return itemType;
         }
 
-    ItemType(Integer code, String itemType) {
+    ItemTypeEnum(Integer code, String itemType) {
         this.code = code;
         this.itemType = itemType;
     }
 
-    public static ItemType getByCode(Integer code) {
+    public static ItemTypeEnum getByCode(Integer code) {
         if (code == null) {
             return null;
         }
-        for (ItemType itemType : ItemType.values()) {
-            if (itemType.getCode().equals(code)) {
-                return itemType;
+        for (ItemTypeEnum itemTypeEnum : ItemTypeEnum.values()) {
+            if (itemTypeEnum.getCode().equals(code)) {
+                return itemTypeEnum;
             }
         }
         return null;

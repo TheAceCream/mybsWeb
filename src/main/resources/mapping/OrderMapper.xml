@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mybs.dao.OrderDao">
+    <resultMap id="BaseResultMap" type="com.mybs.dto.OrderDto">
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="price" column="price" jdbcType="DOUBLE"/>
+        <result property="state" column="state" jdbcType="TINYINT"/>
+        <result property="creatTime" column="creat_time" jdbcType="DATETIME"/>
+        <result property="other" column="other" jdbcType="VARCHAR"/>
+        <result property="counts" column="counts" jdbcType="INTEGER"/>
+        <result property="userId" column="u_id" jdbcType="BIGINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,
+        name,
+        price,
+        state,
+        creat_time,
+        other,
+        counts,
+        u_id
+    </sql>
+
+    <sql id="whereStatement">
+        <where>
+            <if test="id !=null">
+                AND id = #{id }
+            </if>
+            <if test="userId !=null">
+                AND u_id = #{userId }
+            </if>
+            <if test="name!=null and name!='' ">
+                AND name LIKE CONCAT('%',#{name },'%')
+            </if>
+            <if test="state !=null">
+                AND state = #{state }
+            </if>
+        </where>
+    </sql>
+
+    <select id="getOrderById" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        SELECT <include refid="Base_Column_List"/>
+        FROM t_order
+        WHERE id=#{id,jdbcType=BIGINT }
+    </select>
+
+    <select id="findList" resultMap="BaseResultMap" parameterType="com.mybs.dto.OrderDto">
+        SELECT <include refid="Base_Column_List"/>
+        FROM t_order
+        <include refid="whereStatement"/>
+        <if test="pager != null ">
+            limit #{pager.start },#{pager.pageSize }
+        </if>
+    </select>
+
+    <select id="countList" parameterType="com.mybs.dto.OrderDto" resultType="java.lang.Integer">
+        SELECT
+        count(1)
+        FROM t_order
+        <include refid="whereStatement"/>
+    </select>
+
+    <insert id="addOrder" parameterType="com.mybs.po.Order">
+        INSERT INTO t_order
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="name != null ">
+                name,
+            </if>
+            <if test="price != null ">
+                price,
+            </if>
+            <if test="state != null ">
+                state,
+            </if>
+            <if test="creatTime != null ">
+                creat_time,
+            </if>
+            <if test="other != null ">
+                other,
+            </if>
+            <if test="counts != null ">
+                counts,
+            </if>
+            <if test="userId != null ">
+                u_id,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR },
+            </if>
+            <if test="price != null">
+                #{price,jdbcType=DOUBLE },
+            </if>
+            <if test="state != null">
+                #{state,jdbcType=TINYINT },
+            </if>
+            <if test="creatTime != null">
+                #{creatTime,jdbcType=TIMESTAMP },
+            </if>
+            <if test="other != null">
+                #{other,jdbcType=VARCHAR },
+            </if>
+            <if test="counts != null">
+                #{counts,jdbcType=INTEGER },
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=BIGINT },
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateOrderById" parameterType="com.mybs.po.Order">
+        UPDATE t_order
+        <set>
+            <if test="name!=null">
+                name=#{name,jdbcType=VARCHAR },
+            </if>
+            <if test="price!=null">
+                price=#{price,jdbcType=DOUBLE },
+            </if>
+            <if test="state!=null">
+                state=#{state,jdbcType=TINYINT },
+            </if>
+            <if test="creatTime!=null">
+                creat_time=#{creatTime,jdbcType=TIMESTAMP },
+            </if>
+            <if test="other!=null">
+                other=#{other,jdbcType=VARCHAR },
+            </if>
+            <if test="counts!=null">
+                counts=#{counts,jdbcType=INTEGER },
+            </if>
+            <if test="note!=null">
+                note=#{note,jdbcType=VARCHAR },
+            </if>
+            <if test="userId!=null">
+                u_id=#{userId,jdbcType=BIGINT }
+            </if>
+        </set>
+        WHERE id=#{id,jdbcType=BIGINT }
+    </update>
+
+
+
+    <delete id="delOrder" parameterType="java.lang.Long">
+        DELETE FROM t_order WHERE id=#{id,jdbcType=BIGINT }
+    </delete>
+
+
+</mapper>

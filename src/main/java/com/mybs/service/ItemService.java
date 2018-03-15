@@ -14,14 +14,14 @@ public interface ItemService {
      * @param id
      * @return
      */
-    Item getItemById(Long id);
+    ItemDto getItemById(Long id);
 
     /**
      * 获取列表
      * @param itemDto
      * @return
      */
-    List<Item> findList(ItemDto itemDto);
+    List<ItemDto> findList(ItemDto itemDto);
 
     /**
      * 列表数
@@ -45,12 +45,19 @@ public interface ItemService {
     int updateItemById(Item item);
 
     /**
+     * 删除商品
+     * @param id
+     * @return
+     */
+    int delItem(Long id);
+
+    /**
      * 商品卖出后
      * 库存 -1
      * 销售量 +1
-     * @param item
+     * @param itemId
      * @return
      */
-    int updateItemStoreAndSale(Item item);
+    int updateItemStoreAndSale(Long itemId);
 
 }

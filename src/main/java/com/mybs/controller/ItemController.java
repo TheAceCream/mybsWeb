@@ -1,6 +1,5 @@
 package com.mybs.controller;
 
-import com.mybs.dao.ItemDao;
 import com.mybs.dto.ItemDto;
 import com.mybs.exception.APICode;
 import com.mybs.exception.APIException;
@@ -23,7 +22,6 @@ public class ItemController {
 
     @Resource
     private ItemService itemService;
-
 
     /**
      * 添加商品
@@ -59,8 +57,8 @@ public class ItemController {
     public BaseResultMap getItemDetail(@RequestParam("itemId") Long itemId, HttpServletRequest request) {
         BaseResultMap resultMap = new BaseResultMap();
         try {
-            Item item = itemService.getItemById(itemId);
-            resultMap.setData(item);
+            ItemDto itemDto = itemService.getItemById(itemId);
+            resultMap.setData(itemDto);
             resultMap.setAPICode(APICode.OK);
         } catch (APIException e) {
             resultMap.setCode(e.getCode());
@@ -82,8 +80,8 @@ public class ItemController {
     public BaseResultMap getItemList(@RequestBody ItemDto itemDto, HttpServletRequest request) {
         BaseResultMap resultMap = new BaseResultMap();
         try {
-            List<Item> itemList = itemService.findList(itemDto);
-            resultMap.setData(itemList);
+            List<ItemDto> itemDtoList = itemService.findList(itemDto);
+            resultMap.setData(itemDtoList);
             resultMap.setAPICode(APICode.OK);
         } catch (APIException e) {
             resultMap.setCode(e.getCode());
@@ -115,6 +113,29 @@ public class ItemController {
         }
         return resultMap;
     }
+
+    /**
+     * 删除商品
+     * @param itemId
+     * @param request
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "delItem", method = RequestMethod.GET, produces = "application/json")
+    public BaseResultMap delItem(@RequestParam("itemId") Long itemId, HttpServletRequest request) {
+        BaseResultMap resultMap = new BaseResultMap();
+        try {
+            int i = itemService.delItem(itemId);
+            resultMap.setAPICode(APICode.OK);
+        } catch (APIException e) {
+            resultMap.setCode(e.getCode());
+            resultMap.setMsg(e.getMsg());
+        } catch (Exception e) {
+            resultMap.setAPICode(APICode.RUNTIME_EXECEPTION);
+        }
+        return resultMap;
+    }
+
 
 
 
