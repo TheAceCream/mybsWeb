@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mybs.dao.ItemDao">
+    <resultMap id="BaseResultMap" type="com.mybs.po.Item">
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="itemName" column="item_name" jdbcType="VARCHAR"/>
+        <result property="title" column="title" jdbcType="VARCHAR"/>
+        <result property="price" column="price" jdbcType="DOUBLE"/>
+        <result property="store" column="store" jdbcType="INTEGER"/>
+        <result property="sale" column="sale" jdbcType="INTEGER"/>
+        <result property="sort" column="sort" jdbcType="INTEGER"/>
+        <result property="note" column="note" jdbcType="VARCHAR"/>
+        <result property="img" column="img" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,
+        item_name,
+        title,
+        price,
+        store,
+        sale,
+        sort,
+        note,
+        img
+    </sql>
+
+    <sql id="whereStatement">
+        <where>
+            <if test="id !=null">
+                AND id = #{id }
+            </if>
+            <if test="itemName!=null and itemName!='' ">
+                AND item_name LIKE CONCAT('%',#{itemName },'%')
+            </if>
+            <if test="title !=null and title!='' ">
+                AND title LIKE CONCAT('%',#{title },'%')
+            </if>
+            <if test="sort !=null">
+                AND sort = #{sort }
+            </if>
+        </where>
+    </sql>
+
+    <select id="getItemById" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        SELECT <include refid="Base_Column_List"/>
+        FROM t_item
+        WHERE id=#{id,jdbcType=BIGINT }
+    </select>
+
+    <select id="findList" resultMap="BaseResultMap" parameterType="com.mybs.dto.ItemDto">
+        SELECT <include refid="Base_Column_List"/>
+        FROM t_item
+        <include refid="whereStatement"/>
+        <if test="pager != null ">
+            limit #{pager.start },#{pager.pageSize }
+        </if>
+    </select>
+
+    <select id="countList" parameterType="com.mybs.dto.ItemDto" resultType="java.lang.Integer">
+        SELECT
+        count(1)
+        FROM t_item
+        <include refid="whereStatement"/>
+    </select>
+
+    <insert id="addItem" parameterType="com.mybs.po.Item">
+        INSERT INTO t_item
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="itemName != null ">
+                item_name,
+            </if>
+            <if test="title != null ">
+                title,
+            </if>
+            <if test="price != null ">
+                price,
+            </if>
+            <if test="store != null ">
+                store,
+            </if>
+            <if test="sale != null ">
+                sale,
+            </if>
+            <if test="sort != null ">
+                sort,
+            </if>
+            <if test="note != null ">
+                note,
+            </if>
+            <if test="img != null ">
+                img,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="itemName != null">
+                #{itemName,jdbcType=VARCHAR },
+            </if>
+            <if test="title != null">
+                #{title,jdbcType=VARCHAR },
+            </if>
+            <if test="price != null">
+                #{price,jdbcType=DOUBLE },
+            </if>
+            <if test="store != null">
+                #{store,jdbcType=INTEGER },
+            </if>
+            <if test="sale != null">
+                #{sale,jdbcType=INTEGER },
+            </if>
+            <if test="sort != null">
+                #{sort,jdbcType=INTEGER },
+            </if>
+            <if test="note != null">
+                #{note,jdbcType=VARCHAR },
+            </if>
+            <if test="img != null">
+                #{img,jdbcType=VARCHAR }
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateItemById" parameterType="com.mybs.po.Item">
+        UPDATE t_item
+        <set>
+            <if test="itemName!=null">
+                item_name=#{itemName,jdbcType=VARCHAR },
+            </if>
+            <if test="title!=null">
+                title=#{title,jdbcType=VARCHAR },
+            </if>
+            <if test="price!=null">
+                sex=#{price,jdbcType=DOUBLE },
+            </if>
+            <if test="store!=null">
+                store=#{store,jdbcType=INTEGER },
+            </if>
+            <if test="sale!=null">
+                sale=#{sale,jdbcType=INTEGER },
+            </if>
+            <if test="sort!=null">
+                sort=#{sort,jdbcType=INTEGER },
+            </if>
+            <if test="note!=null">
+                note=#{note,jdbcType=VARCHAR },
+            </if>
+            <if test="img!=null">
+                img=#{img,jdbcType=VARCHAR }
+            </if>
+        </set>
+        WHERE id=#{id,jdbcType=BIGINT }
+    </update>
+
+
+</mapper>

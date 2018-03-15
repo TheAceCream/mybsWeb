@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mybs.dao.UserDao">
+    <resultMap id="BaseResultMap" type="com.mybs.po.User">
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="username" column="username" jdbcType="VARCHAR"/>
+        <result property="password" column="password" jdbcType="VARCHAR"/>
+        <result property="sex" column="sex" jdbcType="TINYINT"/>
+        <result property="mobile" column="mobile" jdbcType="VARCHAR"/>
+        <result property="email" column="email" jdbcType="VARCHAR"/>
+        <result property="area" column="area" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,
+        username,
+        password,
+        sex,
+        mobile,
+        email,
+        area
+    </sql>
+
+    <select id="getUserByUsername" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT <include refid="Base_Column_List"/>
+        FROM t_user
+        WHERE username=#{username,jdbcType=VARCHAR }
+    </select>
+
+    <select id="getUserByNameAndPsw" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM t_user
+        WHERE username=#{username,jdbcType=VARCHAR } AND password=#{password ,jdbcType=VARCHAR}
+    </select>
+
+    <insert id="addUser" parameterType="com.mybs.po.User">
+        INSERT INTO t_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="username != null ">
+                username,
+            </if>
+            <if test="password != null ">
+                password,
+            </if>
+            <if test="sex != null ">
+                sex,
+            </if>
+            <if test="mobile != null ">
+                mobile,
+            </if>
+            <if test="email != null ">
+                email,
+            </if>
+            <if test="area != null ">
+                area,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="username != null">
+                #{username,jdbcType=VARCHAR },
+            </if>
+            <if test="password != null">
+                #{password,jdbcType=VARCHAR },
+            </if>
+            <if test="sex != null">
+                #{sex,jdbcType=TINYINT },
+            </if>
+            <if test="mobile != null">
+                #{mobile,jdbcType=VARCHAR },
+            </if>
+            <if test="email != null">
+                #{email,jdbcType=VARCHAR },
+            </if>
+            <if test="area != null">
+                #{area,jdbcType=VARCHAR })
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateUserById" parameterType="com.mybs.po.User">
+        UPDATE t_user
+        <set>
+            <if test="username!=null">
+                username=#{username,jdbcType=VARCHAR },
+            </if>
+            <if test="password!=null">
+                password=#{password,jdbcType=VARCHAR },
+            </if>
+            <if test="sex!=null">
+                sex=#{sex,jdbcType=TINYINT },
+            </if>
+            <if test="mobile!=null">
+                mobile=#{mobile,jdbcType=VARCHAR },
+            </if>
+            <if test="email!=null">
+                email=#{email,jdbcType=VARCHAR },
+            </if>
+            <if test="area!=null">
+                area=#{area,jdbcType=VARCHAR }
+            </if>
+        </set>
+        WHERE id=#{id,jdbcType=BIGINT };
+    </update>
+
+
+</mapper>
