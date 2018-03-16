@@ -116,17 +116,22 @@ public class ItemController {
 
     /**
      * 删除商品
-     * @param itemId
+     * @param itemDto
      * @param request
      * @return
      */
     @ResponseBody
-    @RequestMapping(value = "delItem", method = RequestMethod.GET, produces = "application/json")
-    public BaseResultMap delItem(@RequestParam("itemId") Long itemId, HttpServletRequest request) {
+    @RequestMapping(value = "delItem", method = RequestMethod.POST, produces = "application/json")
+    public BaseResultMap delItem(@RequestBody ItemDto itemDto, HttpServletRequest request) {
         BaseResultMap resultMap = new BaseResultMap();
         try {
-            int i = itemService.delItem(itemId);
-            resultMap.setAPICode(APICode.OK);
+            Long itemId = itemDto.getId();
+            if (itemId!=null){
+                itemService.delItem(itemId);
+                resultMap.setAPICode(APICode.OK);
+            }else {
+                throw new Exception();
+            }
         } catch (APIException e) {
             resultMap.setCode(e.getCode());
             resultMap.setMsg(e.getMsg());

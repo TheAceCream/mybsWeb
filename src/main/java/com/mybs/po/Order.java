@@ -12,6 +12,8 @@ public class Order implements Serializable{
 
     private Long userId;
 
+    private Long itemId;
+
     private String name;
 
     private Double price;
@@ -38,6 +40,14 @@ public class Order implements Serializable{
 
     public void setUserId(Long userId) {
         this.userId = userId;
+    }
+
+    public Long getItemId() {
+        return itemId;
+    }
+
+    public void setItemId(Long itemId) {
+        this.itemId = itemId;
     }
 
     public String getName() {
@@ -93,6 +103,7 @@ public class Order implements Serializable{
         return "Order{" +
                 "id=" + id +
                 ", userId=" + userId +
+                ", itemId=" + itemId +
                 ", name='" + name + '\'' +
                 ", price=" + price +
                 ", counts=" + counts +

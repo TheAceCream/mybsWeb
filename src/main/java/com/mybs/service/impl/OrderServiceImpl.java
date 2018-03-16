@@ -8,6 +8,7 @@ import com.mybs.utils.UniqueIDUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -37,6 +38,7 @@ public class OrderServiceImpl implements OrderService{
     @Override
     public Long addOrder(Order order) {
         order.setId(UniqueIDUtils.getUniqueID());
+        order.setCreatTime(new Timestamp(System.currentTimeMillis()));
         orderDao.addOrder(order);
         return order.getId();
     }

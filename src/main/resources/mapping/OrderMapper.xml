@@ -8,10 +8,11 @@
         <result property="name" column="name" jdbcType="VARCHAR"/>
         <result property="price" column="price" jdbcType="DOUBLE"/>
         <result property="state" column="state" jdbcType="TINYINT"/>
-        <result property="creatTime" column="creat_time" jdbcType="DATETIME"/>
+        <result property="creatTime" column="creat_time" jdbcType="TIMESTAMP"/>
         <result property="other" column="other" jdbcType="VARCHAR"/>
         <result property="counts" column="counts" jdbcType="INTEGER"/>
         <result property="userId" column="u_id" jdbcType="BIGINT"/>
+        <result property="itemId" column="i_id" jdbcType="BIGINT"/>
     </resultMap>
 
     <sql id="Base_Column_List">
@@ -22,7 +23,8 @@
         creat_time,
         other,
         counts,
-        u_id
+        u_id,
+        i_id
     </sql>
 
     <sql id="whereStatement">
@@ -32,6 +34,9 @@
             </if>
             <if test="userId !=null">
                 AND u_id = #{userId }
+            </if>
+            <if test="userId !=null">
+                AND i_id = #{itemId }
             </if>
             <if test="name!=null and name!='' ">
                 AND name LIKE CONCAT('%',#{name },'%')
@@ -91,6 +96,9 @@
             <if test="userId != null ">
                 u_id,
             </if>
+            <if test="itemId != null ">
+                i_id,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -116,6 +124,9 @@
             </if>
             <if test="userId != null">
                 #{userId,jdbcType=BIGINT },
+            </if>
+            <if test="itemId != null">
+                #{itemId,jdbcType=BIGINT },
             </if>
         </trim>
     </insert>
@@ -147,11 +158,12 @@
             <if test="userId!=null">
                 u_id=#{userId,jdbcType=BIGINT }
             </if>
+            <if test="itemId!=null">
+                i_id=#{itemId,jdbcType=BIGINT }
+            </if>
         </set>
         WHERE id=#{id,jdbcType=BIGINT }
     </update>
-
-
 
     <delete id="delOrder" parameterType="java.lang.Long">
         DELETE FROM t_order WHERE id=#{id,jdbcType=BIGINT }

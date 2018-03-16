@@ -56,8 +56,8 @@ public class OrderController {
      * @return
      */
     @ResponseBody
-    @RequestMapping(value = "getItemDetail", method = RequestMethod.GET, produces = "application/json")
-    public BaseResultMap getItemDetail(@RequestParam("orderId") Long orderId, HttpServletRequest request) {
+    @RequestMapping(value = "getOrderDetail", method = RequestMethod.GET, produces = "application/json")
+    public BaseResultMap getOrderDetail(@RequestParam("orderId") Long orderId, HttpServletRequest request) {
         BaseResultMap resultMap = new BaseResultMap();
         try {
             OrderDto orderDto = orderService.getOrderById(orderId);
@@ -80,11 +80,12 @@ public class OrderController {
      * @return
      */
     @ResponseBody
-    @RequestMapping(value = "getItemList", method = RequestMethod.POST, produces = "application/json")
-    public BaseResultMap getItemList(@RequestBody OrderDto orderDto, HttpServletRequest request) {
+    @RequestMapping(value = "getOrderList", method = RequestMethod.POST, produces = "application/json")
+    public BaseResultMap getOrderList(@RequestBody OrderDto orderDto, HttpServletRequest request) {
         BaseResultMap resultMap = new BaseResultMap();
         try {
             List<OrderDto> orderDtoList = orderService.findList(orderDto);
+
             resultMap.setData(orderDtoList);
             resultMap.setAPICode(APICode.OK);
         } catch (APIException e) {
@@ -121,17 +122,22 @@ public class OrderController {
 
     /**
      * 删除订单
-     * @param orderId
+     * @param orderDto
      * @param request
      * @return
      */
     @ResponseBody
-    @RequestMapping(value = "delOrder", method = RequestMethod.GET, produces = "application/json")
-    public BaseResultMap delOrder(@RequestParam("orderId") Long orderId, HttpServletRequest request) {
+    @RequestMapping(value = "delOrder", method = RequestMethod.POST, produces = "application/json")
+    public BaseResultMap delOrder(@RequestBody OrderDto orderDto, HttpServletRequest request) {
         BaseResultMap resultMap = new BaseResultMap();
         try {
-            int i = orderService.delOrder(orderId);
-            resultMap.setAPICode(APICode.OK);
+            Long orderId = orderDto.getId();
+            if (orderId!=null){
+                orderService.delOrder(orderId);
+                resultMap.setAPICode(APICode.OK);
+            }else {
+                throw new Exception();
+            }
         } catch (APIException e) {
             resultMap.setCode(e.getCode());
             resultMap.setMsg(e.getMsg());

@@ -1,6 +1,7 @@
 package com.mybs.dto;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.mybs.utils.Pager;
 import com.mybs.utils.StringToDateDeserializer;
 
 import java.io.Serializable;
@@ -14,6 +15,10 @@ public class OrderDto implements Serializable{
     private Long id;
 
     private Long userId;
+
+    private Long itemId;
+
+    private String itemStr;
 
     private String name;
 
@@ -29,6 +34,8 @@ public class OrderDto implements Serializable{
 
     private String other;
 
+    private Pager pager;
+
     public Long getId() {
         return id;
     }
@@ -43,6 +50,22 @@ public class OrderDto implements Serializable{
 
     public void setUserId(Long userId) {
         this.userId = userId;
+    }
+
+    public Long getItemId() {
+        return itemId;
+    }
+
+    public void setItemId(Long itemId) {
+        this.itemId = itemId;
+    }
+
+    public String getItemStr() {
+        return itemStr;
+    }
+
+    public void setItemStr(String itemStr) {
+        this.itemStr = itemStr;
     }
 
     public String getName() {
@@ -100,5 +123,13 @@ public class OrderDto implements Serializable{
 
     public void setOther(String other) {
         this.other = other;
+    }
+
+    public Pager getPager() {
+        return pager;
+    }
+
+    public void setPager(Pager pager) {
+        this.pager = pager;
     }
 }
