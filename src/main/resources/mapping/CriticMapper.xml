@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mybs.dao.CriticDao">
+    <resultMap id="BaseResultMap" type="com.mybs.dto.CriticDto">
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="itemId" column="i_id" jdbcType="BIGINT"/>
+        <result property="userId" column="u_id" jdbcType="BIGINT"/>
+        <result property="star" column="star" jdbcType="TINYINT"/>
+        <result property="note" column="note" jdbcType="VARCHAR"/>
+        <result property="creatTime" column="creat_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,
+        i_id,
+        u_id,
+        star,
+        note,
+        creat_time
+    </sql>
+
+    <sql id="whereStatement">
+        <where>
+            <if test="id !=null">
+                AND id = #{id }
+            </if>
+            <if test="userId !=null">
+                AND u_id = #{userId }
+            </if>
+            <if test="itemId !=null">
+                AND i_id = #{itemId }
+            </if>
+        </where>
+    </sql>
+
+    <select id="getCriticById" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        SELECT <include refid="Base_Column_List"/>
+        FROM t_critic
+        WHERE id=#{id,jdbcType=BIGINT }
+    </select>
+
+    <select id="findList" resultMap="BaseResultMap" parameterType="com.mybs.dto.CriticDto">
+        SELECT <include refid="Base_Column_List"/>
+        FROM t_critic
+        <include refid="whereStatement"/>
+        <if test="pager != null ">
+            limit #{pager.start },#{pager.pageSize }
+        </if>
+    </select>
+
+    <select id="countList" parameterType="com.mybs.dto.CriticDto" resultType="java.lang.Integer">
+        SELECT
+        count(1)
+        FROM t_critic
+        <include refid="whereStatement"/>
+    </select>
+
+    <insert id="addCritic" parameterType="com.mybs.po.Critic">
+        INSERT INTO t_critic
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="itemId != null ">
+                i_id,
+            </if>
+            <if test="userId != null ">
+                u_id,
+            </if>
+            <if test="star != null ">
+                star,
+            </if>
+            <if test="note != null ">
+                note,
+            </if>
+            <if test="creatTime != null ">
+                creat_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="itemId != null">
+                #{itemId,jdbcType=BIGINT },
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=BIGINT },
+            </if>
+            <if test="star != null">
+                #{star,jdbcType=TINYINT },
+            </if>
+            <if test="note != null">
+                #{note,jdbcType=VARCHAR },
+            </if>
+            <if test="creatTime != null">
+                #{creatTime,jdbcType=TIMESTAMP },
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateCriticById" parameterType="com.mybs.po.Critic">
+        UPDATE t_critic
+        <set>
+            <if test="itemId!=null">
+                i_id=#{itemId,jdbcType=BIGINT },
+            </if>
+            <if test="userId!=null">
+                u_id=#{userId,jdbcType=BIGINT },
+            </if>
+            <if test="star!=null">
+                star=#{star,jdbcType=TINYINT },
+            </if>
+            <if test="note!=null">
+                note=#{note,jdbcType=VARCHAR },
+            </if>
+            <if test="creatTime!=null">
+                creat_time=#{creatTime,jdbcType=TIMESTAMP },
+            </if>
+        </set>
+        WHERE id=#{id,jdbcType=BIGINT }
+    </update>
+
+    <delete id="delCritic" parameterType="java.lang.Long">
+        DELETE FROM t_critic WHERE id=#{id,jdbcType=BIGINT }
+    </delete>
+
+
+</mapper>

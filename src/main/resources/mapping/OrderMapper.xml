@@ -35,7 +35,7 @@
             <if test="userId !=null">
                 AND u_id = #{userId }
             </if>
-            <if test="userId !=null">
+            <if test="itemId !=null">
                 AND i_id = #{itemId }
             </if>
             <if test="name!=null and name!='' ">
