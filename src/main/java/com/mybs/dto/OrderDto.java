@@ -26,7 +26,7 @@ public class OrderDto implements Serializable{
 
     private Integer counts;
 
-    private Byte state;
+    private Integer state;
 
     private String stateStr;
 
@@ -92,11 +92,11 @@ public class OrderDto implements Serializable{
         this.counts = counts;
     }
 
-    public Byte getState() {
+    public Integer getState() {
         return state;
     }
 
-    public void setState(Byte state) {
+    public void setState(Integer state) {
         this.state = state;
     }
 

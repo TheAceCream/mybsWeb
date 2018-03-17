@@ -160,17 +160,23 @@ public class OrderController {
     public BaseResultMap changeOrderState(@RequestParam("orderId") Long orderId,@RequestParam("state") Integer state, HttpServletRequest request) {
         BaseResultMap resultMap = new BaseResultMap();
         try {
-            if (state.equals(OrderStateEnum.READY)){
-                //待付款
-                System.out.println("变更为待付款");
-            }else if (state.equals(OrderStateEnum.PAYED)){
+            OrderDto orderDto = orderService.getOrderById(orderId);
+            Order order = new Order();
+            order.setId(orderDto.getId());
+            if (state.equals(OrderStateEnum.PAYED)){
                 //已付款
+                order.setState(OrderStateEnum.PAYED.getCode());
+                orderService.updateOrderById(order);
                 System.out.println("变更为已付款");
-            }else if (state.equals(OrderStateEnum.SALED)){
+            }else if (state.equals(OrderStateEnum.SALED.getCode())){
                 //已发货
+                order.setState(OrderStateEnum.SALED.getCode());
+                orderService.updateOrderById(order);
                 System.out.println("变更为已发货");
-            }else if (state.equals(OrderStateEnum.FINISH)){
+            }else if (state.equals(OrderStateEnum.FINISH.getCode())){
                 //确认收货
+                order.setState(OrderStateEnum.FINISH.getCode());
+                orderService.updateOrderById(order);
                 System.out.println("变更为确认收货");
             }
             resultMap.setAPICode(APICode.OK);

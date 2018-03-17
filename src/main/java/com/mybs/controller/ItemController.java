@@ -59,7 +59,7 @@ public class ItemController {
                 pictureFile.transferTo(file);
             }
             //添加图片地址
-            item.setImg(rootPath + "/" + fileName);
+            item.setImg(fileName);
             Long itemId = itemService.addItem(item);
             resultMap.setData(itemId);
             resultMap.setAPICode(APICode.OK);

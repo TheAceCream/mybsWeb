@@ -1,8 +1,12 @@
 package com.mybs.service.impl;
 
+import com.mybs.dao.ItemDao;
 import com.mybs.dao.OrderDao;
+import com.mybs.dto.ItemDto;
 import com.mybs.dto.OrderDto;
+import com.mybs.enums.ItemTypeEnum;
 import com.mybs.po.Order;
+import com.mybs.po.User;
 import com.mybs.service.OrderService;
 import com.mybs.utils.UniqueIDUtils;
 import org.springframework.stereotype.Service;
@@ -19,6 +23,8 @@ public class OrderServiceImpl implements OrderService{
 
     @Resource
     private OrderDao orderDao;
+    @Resource
+    private ItemDao itemDao;
 
     @Override
     public OrderDto getOrderById(Long id) {
@@ -27,6 +33,11 @@ public class OrderServiceImpl implements OrderService{
 
     @Override
     public List<OrderDto> findList(OrderDto orderDto) {
+        List<OrderDto> orderDtoList = orderDao.findList(orderDto);
+        for (OrderDto temp : orderDtoList) {
+            ItemDto itemDto = itemDao.getItemById(temp.getItemId());
+            temp.setItemStr(itemDto.getItemName());
+        }
         return orderDao.findList(orderDto);
     }
 

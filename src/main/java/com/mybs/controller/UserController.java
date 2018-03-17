@@ -6,10 +6,7 @@ import com.mybs.po.User;
 import com.mybs.pub.BaseResultMap;
 import com.mybs.service.UserService;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -53,6 +50,23 @@ public class UserController {
         return resultMap;
     }
 
+    @ResponseBody
+    @RequestMapping(value = "getUserById", method = RequestMethod.GET, produces = "application/json")
+    public BaseResultMap getUserById(@RequestParam("id") Long id, HttpServletRequest request) {
+        BaseResultMap resultMap = new BaseResultMap();
+        try {
+            User user = userService.getUserById(id);
+            resultMap.setData(user);
+            resultMap.setAPICode(APICode.OK);
+        } catch (APIException e) {
+            resultMap.setCode(e.getCode());
+            resultMap.setMsg(e.getMsg());
+        } catch (Exception e) {
+            resultMap.setAPICode(APICode.RUNTIME_EXECEPTION);
+        }
+        return resultMap;
+    }
+
     /**
      * 用户登录
      * @param user
@@ -66,7 +80,7 @@ public class UserController {
         try {
             User theUser = userService.getUserByNameAndPsw(user.getUsername(), user.getPassword());
             if (theUser != null) {
-                resultMap.setData(theUser.getId());
+                resultMap.setData(theUser);
                 resultMap.setAPICode(APICode.OK);
             } else {
                 resultMap.setAPICode(APICode.LOGIN_FAILED);

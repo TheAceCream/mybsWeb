@@ -5,10 +5,9 @@ package com.mybs.enums;
  */
 public enum  OrderStateEnum {
 
-    READY(101,"待付款"),
-    PAYED(102,"已付款"),
-    SALED(103,"已发货"),
-    FINISH(104,"确认收货");
+    PAYED(101,"已支付"),
+    SALED(102,"已发货"),
+    FINISH(103,"确认收货");
 
     private Integer code;
     private String desc;

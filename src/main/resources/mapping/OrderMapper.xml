@@ -7,7 +7,7 @@
         <id property="id" column="id" jdbcType="BIGINT"/>
         <result property="name" column="name" jdbcType="VARCHAR"/>
         <result property="price" column="price" jdbcType="DOUBLE"/>
-        <result property="state" column="state" jdbcType="TINYINT"/>
+        <result property="state" column="state" jdbcType="INTEGER"/>
         <result property="creatTime" column="creat_time" jdbcType="TIMESTAMP"/>
         <result property="other" column="other" jdbcType="VARCHAR"/>
         <result property="counts" column="counts" jdbcType="INTEGER"/>
@@ -111,7 +111,7 @@
                 #{price,jdbcType=DOUBLE },
             </if>
             <if test="state != null">
-                #{state,jdbcType=TINYINT },
+                #{state,jdbcType=INTEGER },
             </if>
             <if test="creatTime != null">
                 #{creatTime,jdbcType=TIMESTAMP },
@@ -141,7 +141,7 @@
                 price=#{price,jdbcType=DOUBLE },
             </if>
             <if test="state!=null">
-                state=#{state,jdbcType=TINYINT },
+                state=#{state,jdbcType=INTEGER },
             </if>
             <if test="creatTime!=null">
                 creat_time=#{creatTime,jdbcType=TIMESTAMP },
@@ -151,9 +151,6 @@
             </if>
             <if test="counts!=null">
                 counts=#{counts,jdbcType=INTEGER },
-            </if>
-            <if test="note!=null">
-                note=#{note,jdbcType=VARCHAR },
             </if>
             <if test="userId!=null">
                 u_id=#{userId,jdbcType=BIGINT }

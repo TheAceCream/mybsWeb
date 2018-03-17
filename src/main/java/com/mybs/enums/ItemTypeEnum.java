@@ -11,9 +11,7 @@ public enum ItemTypeEnum {
     KEYBOARD(104,"键盘"),
     MOUSE(105,"鼠标"),
     HEADPHONE(106,"耳机"),
-    COMPONENT(107,"台式组件"),
-    DISPLAY(108,"显示器"),
-    OTHERS(109,"其他");
+    OTHERS(107,"其他");
 
     private Integer code;
     private String itemType;
