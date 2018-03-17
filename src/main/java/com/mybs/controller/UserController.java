@@ -66,6 +66,7 @@ public class UserController {
         try {
             User theUser = userService.getUserByNameAndPsw(user.getUsername(), user.getPassword());
             if (theUser != null) {
+                resultMap.setData(theUser.getId());
                 resultMap.setAPICode(APICode.OK);
             } else {
                 resultMap.setAPICode(APICode.LOGIN_FAILED);

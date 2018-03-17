@@ -2,6 +2,7 @@ package com.mybs.service.impl;
 
 import com.mybs.dao.ItemDao;
 import com.mybs.dto.ItemDto;
+import com.mybs.enums.ItemTypeEnum;
 import com.mybs.po.Item;
 import com.mybs.service.ItemService;
 import com.mybs.utils.UniqueIDUtils;
@@ -26,7 +27,11 @@ public class ItemServiceImpl implements ItemService{
 
     @Override
     public List<ItemDto> findList(ItemDto itemDto) {
-        return itemDao.findList(itemDto);
+        List<ItemDto> itemDtos = itemDao.findList(itemDto);
+        for (ItemDto temp : itemDtos) {
+            temp.setSortName(ItemTypeEnum.getByCode(temp.getSort()).getItemType());
+        }
+        return itemDtos;
     }
 
     @Override

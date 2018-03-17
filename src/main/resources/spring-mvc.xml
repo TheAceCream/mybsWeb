@@ -51,6 +51,7 @@
         <property name="maxInMemorySize" value="4096"/>
     </bean>
 
-
+    <mvc:resources mapping="/img/**" location="/img"/>
+    <mvc:default-servlet-handler/>
 
 </beans>

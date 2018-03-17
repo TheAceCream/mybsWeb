@@ -37,4 +37,12 @@ public interface UserService {
      */
     User getUserByUsername(String username);
 
+    /**
+     * 通过id获取用户
+     * @param id
+     * @return
+     */
+    User getUserById(Long id);
+
+
 }
