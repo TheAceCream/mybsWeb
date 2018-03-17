@@ -1,11 +1,14 @@
 package com.mybs.controller;
 
+import com.mybs.dao.ItemDao;
+import com.mybs.dto.ItemDto;
 import com.mybs.dto.OrderDto;
 import com.mybs.enums.OrderStateEnum;
 import com.mybs.exception.APICode;
 import com.mybs.exception.APIException;
 import com.mybs.po.Order;
 import com.mybs.pub.BaseResultMap;
+import com.mybs.service.ItemService;
 import com.mybs.service.OrderService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +26,8 @@ public class OrderController {
 
     @Resource
     private OrderService orderService;
+    @Resource
+    private ItemService itemService;
 
     /**
      * 添加订单
@@ -36,6 +41,16 @@ public class OrderController {
     public BaseResultMap addOrder(@RequestBody Order order, HttpServletRequest request) {
         BaseResultMap resultMap = new BaseResultMap();
         try {
+            double price = 0;
+            //商品数量
+            int count = order.getCounts();
+            //商品单价
+            ItemDto itemDto = itemService.getItemById(order.getItemId());
+            if (itemDto!=null){
+                price = itemDto.getPrice()*count;
+            }
+            order.setPrice(price);
+            order.setName(itemDto.getTitle());
             Long orderId = orderService.addOrder(order);
             resultMap.setData(orderId);
             resultMap.setAPICode(APICode.OK);
