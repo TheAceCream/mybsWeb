@@ -12,7 +12,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by AceCream on 2018/3/16.
@@ -35,8 +37,8 @@ public class CriticController {
     public BaseResultMap addCritic(@RequestBody Critic critic, HttpServletRequest request) {
         BaseResultMap resultMap = new BaseResultMap();
         try {
-            Long orderId = criticService.addCritic(critic);
-            resultMap.setData(orderId);
+            Long criticId = criticService.addCritic(critic);
+            resultMap.setData(criticId);
             resultMap.setAPICode(APICode.OK);
         } catch (APIException e) {
             resultMap.setCode(e.getCode());
@@ -49,16 +51,16 @@ public class CriticController {
 
     /**
      * 评论详情
-     * @param orderId
+     * @param criticId
      * @param request
      * @return
      */
     @ResponseBody
     @RequestMapping(value = "getCriticDetail", method = RequestMethod.GET, produces = "application/json")
-    public BaseResultMap getCriticDetail(@RequestParam("criticId") Long orderId, HttpServletRequest request) {
+    public BaseResultMap getCriticDetail(@RequestParam("criticId") Long criticId, HttpServletRequest request) {
         BaseResultMap resultMap = new BaseResultMap();
         try {
-            CriticDto criticDto = criticService.getCriticById(orderId);
+            CriticDto criticDto = criticService.getCriticById(criticId);
             resultMap.setData(criticDto);
             resultMap.setAPICode(APICode.OK);
         } catch (APIException e) {

@@ -1,5 +1,7 @@
 package com.mybs.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.mybs.dao.ItemDao;
 import com.mybs.dto.ItemDto;
 import com.mybs.dto.OrderDto;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.json.Json;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
@@ -193,6 +196,11 @@ public class OrderController {
                 order.setState(OrderStateEnum.FINISH.getCode());
                 orderService.updateOrderById(order);
                 System.out.println("变更为确认收货");
+            }else if (state.equals(OrderStateEnum.CRITIC.getCode())){
+                //待评价
+                order.setState(OrderStateEnum.CRITIC.getCode());
+                orderService.updateOrderById(order);
+                System.out.println("变更为待评价");
             }
             resultMap.setAPICode(APICode.OK);
         } catch (APIException e) {

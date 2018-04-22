@@ -5,6 +5,7 @@ import com.mybs.exception.APIException;
 import com.mybs.po.Manager;
 import com.mybs.pub.BaseResultMap;
 import com.mybs.service.ManagerService;
+import com.sun.deploy.net.HttpResponse;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,6 +14,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
 
 /**
  * Created by AceCream on 2018/3/14.
@@ -66,6 +70,10 @@ public class ManagerController {
         try {
             Manager theManager = managerService.getManager(manager);
             if (theManager != null) {
+                //放入session中
+                HttpSession session = request.getSession();
+                session.setAttribute("manager",theManager);
+                resultMap.setData(theManager);
                 resultMap.setAPICode(APICode.OK);
             } else {
                 resultMap.setAPICode(APICode.LOGIN_FAILED);
@@ -79,11 +87,20 @@ public class ManagerController {
         return resultMap;
     }
 
-
-
-
-
-
+    /**
+     * 管理员退出登录
+     * @param request
+     */
+    @RequestMapping(value = "/managerLogout",method = RequestMethod.GET)
+    public void managerLogout(HttpServletRequest request, HttpServletResponse response) {
+        HttpSession session = request.getSession();
+        session.removeAttribute("manager");
+        try {
+            response.sendRedirect("/index.do");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 
 

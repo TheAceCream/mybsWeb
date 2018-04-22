@@ -7,7 +7,8 @@ public enum  OrderStateEnum {
 
     PAYED(101,"已支付"),
     SALED(102,"已发货"),
-    FINISH(103,"确认收货");
+    FINISH(103,"确认收货"),
+    CRITIC(104,"待评价");
 
     private Integer code;
     private String desc;

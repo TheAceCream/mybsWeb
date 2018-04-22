@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -37,13 +38,16 @@ public class CriticServiceImpl implements CriticService{
     @Override
     public List<CriticDto> findList(CriticDto criticDto) {
         List<CriticDto> criticDtoList = criticDao.findList(criticDto);
+        List<CriticDto> list = new ArrayList<>();
         for (CriticDto temp : criticDtoList) {
-            ItemDto itemDto = itemDao.getItemById(criticDto.getItemId());
-            User user = userDao.getUserById(criticDto.getUserId());
+            ItemDto itemDto = itemDao.getItemById(temp.getItemId());
+            User user = userDao.getUserById(temp.getUserId());
             temp.setItemName(itemDto.getItemName());
             temp.setUsername(user.getUsername());
+            temp.setMobile(user.getMobile());
+            list.add(temp);
         }
-        return criticDao.findList(criticDto);
+        return list;
     }
 
     @Override
@@ -55,6 +59,7 @@ public class CriticServiceImpl implements CriticService{
     public Long addCritic(Critic critic) {
         critic.setId(UniqueIDUtils.getUniqueID());
         critic.setCreatTime(new Timestamp(System.currentTimeMillis()));
+        criticDao.addCritic(critic);
         return critic.getId();
     }
 
