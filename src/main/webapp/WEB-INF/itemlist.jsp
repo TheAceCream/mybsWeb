@@ -11,7 +11,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>订单管理</title>
+    <title>商品列表</title>
 
     <link href="../css/bootstrap.min.css" rel="stylesheet">
     <link href="../css/datepicker3.css" rel="stylesheet">
@@ -51,9 +51,9 @@
 <div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar">
     <ul class="nav menu">
         <li><a href="/home.do"><span class="glyphicon glyphicon-pencil"></span> 首页</a></li>
-        <li class="active"><a href="/tempItemList.do"><span class="glyphicon glyphicon-dashboard"></span> 订单管理</a></li>
-        <li><a href="widgets.html"><span class="glyphicon glyphicon-th"></span> 商品管理</a></li>
-        <li><a href="charts.html"><span class="glyphicon glyphicon-stats"></span> 用户管理</a></li>
+        <li class="active"><a href="/tempItemList.do"><span class="glyphicon glyphicon-dashboard"></span> 商品管理</a></li>
+        <li><a href="/tempOrderList.do"><span class="glyphicon glyphicon-th"></span> 订单管理</a></li>
+        <li><a href="/tempUserList.do"><span class="glyphicon glyphicon-stats"></span> 用户管理</a></li>
         <li class="parent ">
             <ul class="children collapse" id="sub-item-1">
                 <li>
@@ -95,12 +95,12 @@
     <div class="row">
         <div class="col-md-12">
             <div class="panel panel-default">
-                <div class="panel-heading">商品</div>
+                <div class="panel-heading"><a href="/addItemPage.do" class="btn btn-danger">添加商品</a></div>
                 <div class="panel-body">
                     <table data-toggle="table" data-url="tables/data2.json" id="itemTable" >
                         <thead>
                         <tr>
-                            <th data-field="id">商品ID</th>
+                            <th data-field="id">操作</th>
                             <th data-field="name">商品名称</th>
                             <th data-field="title">商品标题</th>
                             <th data-field="price">商品单价</th>
@@ -109,15 +109,6 @@
                             <th data-field="sort">商品种类</th>
                         </tr>
                         </thead>
-                        <%--<tr>--%>
-                            <%--<td data-field="id">商品ID</td>--%>
-                            <%--<td data-field="name">商品名称</td>--%>
-                            <%--<td data-field="title">商品标题</td>--%>
-                            <%--<td data-field="price">商品单价</td>--%>
-                            <%--<td data-field="store">商品库存</td>--%>
-                            <%--<td data-field="sale">商品销售量</td>--%>
-                            <%--<td data-field="sort">商品种类</td>--%>
-                        <%--</tr>--%>
                     </table>
                 </div>
             </div>
@@ -149,8 +140,13 @@
                 var tr = table.insertRow(table.rows.length);
                 var obj = data.data[i];
                 for (var p in obj) {
-                    if (p==='sort'||p==='note'||p==='img'||p==='pager'){
+                    if (p==='sort'||p==='img'||p==='pager'||p==='note'){
 
+                    }else if(p==='id'){
+                        var op = obj[p];
+                        var temp = "修改";
+                        var td = tr.insertCell(tr.cells.length);
+                        td.innerHTML = "<a href='/item/getItemDetailByMa.do?itemId="+ op +"' class='btn btn-primary'>"+temp+"</a>";
                     }else {
                         var op = obj[p];
                         var td = tr.insertCell(tr.cells.length);

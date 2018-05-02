@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * Created by AceCream on 2018/3/13.
@@ -120,7 +121,14 @@ public class UserController {
         return resultMap;
     }
 
-
+    @ResponseBody
+    @RequestMapping(value = "getUserList",method = RequestMethod.POST,produces = "application/json")
+    public BaseResultMap getUserList(){
+        BaseResultMap resultMap = new BaseResultMap();
+        List<User> list = userService.getUserList();
+        resultMap.setData(list);
+        return resultMap;
+    }
 
 
 }

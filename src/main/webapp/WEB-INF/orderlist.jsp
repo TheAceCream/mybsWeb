@@ -49,15 +49,11 @@
 </nav>
 
 <div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar">
-    <form role="search">
-        <div class="form-group">
-            <input type="text" class="form-control" placeholder="Search">
-        </div>
-    </form>
     <ul class="nav menu">
-        <li class="active"><a href="index.html"><span class="glyphicon glyphicon-dashboard"></span> 订单管理</a></li>
-        <li><a href="widgets.html"><span class="glyphicon glyphicon-th"></span> 商品管理</a></li>
-        <li><a href="charts.html"><span class="glyphicon glyphicon-stats"></span> 用户管理</a></li>
+        <li><a href="/home.do"><span class="glyphicon glyphicon-pencil"></span> 首页</a></li>
+        <li><a href="/tempItemList.do"><span class="glyphicon glyphicon-dashboard"></span>商品管理</a></li>
+        <li class="active"><a href="/tempOrderList.do"><span class="glyphicon glyphicon-th"></span> 订单管理</a></li>
+        <li><a href="/tempUserList.do"><span class="glyphicon glyphicon-stats"></span> 用户管理</a></li>
         <li class="parent ">
             <ul class="children collapse" id="sub-item-1">
                 <li>
@@ -97,37 +93,20 @@
         </div>
     </div><!--/.row-->
 
-
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="panel panel-default">
-                <div class="panel-heading">Advanced Table</div>
-                <div class="panel-body">
-                    <table data-toggle="table" data-url="tables/data1.json"  data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc">
-                        <thead>
-                        <tr>
-                            <th data-field="state" data-checkbox="true" >Item ID</th>
-                            <th data-field="id" data-sortable="true">Item ID</th>
-                            <th data-field="name"  data-sortable="true">Item Name</th>
-                            <th data-field="price" data-sortable="true">Item Price</th>
-                        </tr>
-                        </thead>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div><!--/.row-->
     <div class="row">
         <div class="col-md-12">
             <div class="panel panel-default">
-                <div class="panel-heading">商品列表</div>
                 <div class="panel-body">
-                    <table data-toggle="table" data-url="tables/data2.json" >
+                    <table data-toggle="table" data-url="tables/data2.json" id="orderTable" >
                         <thead>
                         <tr>
-                            <th data-field="id" data-align="right">Item ID</th>
-                            <th data-field="name">Item Name</th>
-                            <th data-field="price">Item Price</th>
+                            <th data-field="id">订单状态操作</th>
+                            <th data-field="userId">用户id</th>
+                            <th data-field="itemId">商品id</th>
+                            <th data-field="name">商品名</th>
+                            <th data-field="count">价格</th>
+                            <th data-field="sale">商品数量</th>
+                            <th data-field="sort">订单创建时间</th>
                         </tr>
                         </thead>
                     </table>
@@ -161,6 +140,46 @@
     $(window).on('resize', function () {
         if ($(window).width() <= 767) $('#sidebar-collapse').collapse('hide')
     })
+</script>
+
+<script>
+    $.ajax({
+        method: "POST",
+        url: "/order/getOrderList.do",
+        contentType: 'application/json',
+        data:JSON.stringify({
+
+        }),
+        success: function( data ) {
+            var table = document.getElementById("orderTable");
+            for (var i = 0; i < data.data.length; i++) {
+                var tr = table.insertRow(table.rows.length);
+                var obj = data.data[i];
+                for (var p in obj) {
+                    if (p==='other'||p==='itemStr'||p==='state'||p==='stateStr'){
+
+                    }else if(p==='id'){
+                        var op = obj[p];
+                        var sta = obj['state'];
+                        var temp = "发货";
+                        var td = tr.insertCell(tr.cells.length);
+                        if (sta==101){
+                            td.innerHTML = "<a href='/order/changeOrderState.do?orderId="+ op +"?state="+ sta +" ' class='btn btn-primary'>"+temp+"</a>";
+                        }else {
+                            td.innerHTML = "<p>"+ obj['stateStr'] +"</p>";
+                        }
+
+                    }else {
+                        var op = obj[p];
+                        var td = tr.insertCell(tr.cells.length);
+                        td.innerHTML = op;
+                    }
+
+                }
+            }
+        }
+    });
+
 </script>
 </body>
 

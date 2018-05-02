@@ -3,6 +3,8 @@ package com.mybs.service;
 import com.mybs.po.User;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 /**
  * Created by AceCream on 2018/3/13.
  */
@@ -45,4 +47,9 @@ public interface UserService {
     User getUserById(Long id);
 
 
+    /**
+     * 获取用户表
+     * @return
+     */
+    List<User> getUserList();
 }

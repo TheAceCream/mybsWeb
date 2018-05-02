@@ -7,6 +7,7 @@ import com.mybs.utils.UniqueIDUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * Created by AceCream on 2018/3/13.
@@ -42,5 +43,10 @@ public class UserServiceImpl implements UserService{
     @Override
     public User getUserById(Long id) {
         return userDao.getUserById(id);
+    }
+
+    @Override
+    public List<User> getUserList() {
+        return userDao.getUserList();
     }
 }

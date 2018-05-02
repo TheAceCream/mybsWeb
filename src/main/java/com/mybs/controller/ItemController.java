@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.util.List;
 import java.util.UUID;
@@ -95,6 +96,16 @@ public class ItemController {
         return resultMap;
     }
 
+    //后端获取商品详情
+    @RequestMapping(value = "getItemDetailByMa" , method = RequestMethod.GET)
+    public String getItemDetailByMa(HttpServletRequest request, HttpServletResponse response){
+        Long id= Long.parseLong(request.getParameter("itemId"));
+        ItemDto itemDto = itemService.getItemById(id);
+        request.setAttribute("olditem",itemDto);
+        System.out.println(itemDto);
+        return "updateitem";
+    }
+
     /**
      * 获取商品列表
      * @param itemDto
@@ -142,16 +153,14 @@ public class ItemController {
 
     /**
      * 删除商品
-     * @param itemDto
      * @param request
      * @return
      */
-    @ResponseBody
-    @RequestMapping(value = "delItem", method = RequestMethod.POST, produces = "application/json")
-    public BaseResultMap delItem(@RequestBody ItemDto itemDto, HttpServletRequest request) {
+    @RequestMapping(value = "delItem", method = RequestMethod.GET)
+    public BaseResultMap delItem(HttpServletRequest request,HttpServletResponse response) {
         BaseResultMap resultMap = new BaseResultMap();
         try {
-            Long itemId = itemDto.getId();
+            Long itemId = Long.parseLong(request.getParameter("itemId"));
             if (itemId!=null){
                 itemService.delItem(itemId);
                 resultMap.setAPICode(APICode.OK);

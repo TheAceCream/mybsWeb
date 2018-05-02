@@ -24,7 +24,7 @@
         <div class="login-panel panel panel-default">
             <div class="panel-heading">管理员登录</div>
             <div class="panel-body">
-                <form role="form" method="post">
+                <form id="indexform" role="form" method="post" action="/managerHome.do">
                     <fieldset>
                         <div class="form-group">
                             <input class="form-control" id="managerName" placeholder="username" name="username" type="username" autofocus="">
@@ -73,16 +73,15 @@
                 password:$('#managerPsw').val()
             }),
             success: function( data ) {
+
                 if (data.code==0){
                     //跳转到主界面
-                    window.location.href = "/managerHome.do";
-
+                   $('#indexform').submit();
                 }else if (data.code==100){
                     alert(data.msg)
                 }
 
             }
-
         });
 
     })

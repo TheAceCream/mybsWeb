@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.mybs.dao.ItemDao;
 import com.mybs.dto.ItemDto;
 import com.mybs.dto.OrderDto;
+import com.mybs.enums.ItemTypeEnum;
 import com.mybs.enums.OrderStateEnum;
 import com.mybs.exception.APICode;
 import com.mybs.exception.APIException;
@@ -103,7 +104,9 @@ public class OrderController {
         BaseResultMap resultMap = new BaseResultMap();
         try {
             List<OrderDto> orderDtoList = orderService.findList(orderDto);
-
+            for (OrderDto temp : orderDtoList) {
+                temp.setStateStr(OrderStateEnum.getByCode(temp.getState()).getDesc());
+            }
             resultMap.setData(orderDtoList);
             resultMap.setAPICode(APICode.OK);
         } catch (APIException e) {

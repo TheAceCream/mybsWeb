@@ -27,4 +27,15 @@ public class IndexController {
         return "itemlist";
     }
 
+    @RequestMapping("/tempOrderList")
+    public String toOrderList(){
+        return "orderlist";
+    }
+
+    @RequestMapping("/addItemPage")
+    public String addItemPage(){return "additem"; }
+
+    @RequestMapping("/tempUserList")
+    public String toUserList(){return "userlist"; }
+
 }

@@ -23,6 +23,11 @@
         area
     </sql>
 
+    <select id="getUserList" resultMap="BaseResultMap" parameterType="com.mybs.dto.UserDto">
+        SELECT <include refid="Base_Column_List"/>
+        FROM t_user
+    </select>
+
     <select id="getUserById" resultMap="BaseResultMap" parameterType="java.lang.Long">
         SELECT <include refid="Base_Column_List"/>
         FROM t_user

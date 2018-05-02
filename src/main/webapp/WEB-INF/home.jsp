@@ -50,9 +50,9 @@
 <div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar">
     <ul class="nav menu">
         <li class="active"><a href="/home.do"><span class="glyphicon glyphicon-pencil"></span> 首页</a></li>
-        <li><a href="/tempItemList.do"><span class="glyphicon glyphicon-dashboard"></span> 订单管理</a></li>
-        <li><a href="widgets.html"><span class="glyphicon glyphicon-th"></span> 商品管理</a></li>
-        <li><a href="charts.html"><span class="glyphicon glyphicon-stats"></span> 用户管理</a></li>
+        <li><a href="/tempItemList.do"><span class="glyphicon glyphicon-dashboard"></span>商品管理</a></li>
+        <li><a href="/tempOrderList.do"><span class="glyphicon glyphicon-th"></span> 订单管理</a></li>
+        <li><a href="/tempUserList.do"><span class="glyphicon glyphicon-stats"></span> 用户管理</a></li>
         <li class="parent ">
             <ul class="children collapse" id="sub-item-1">
                 <li>

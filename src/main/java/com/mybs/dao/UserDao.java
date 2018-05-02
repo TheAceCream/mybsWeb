@@ -4,6 +4,8 @@ import com.mybs.po.User;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * Created by AceCream on 2018/3/13.
  */
@@ -46,4 +48,9 @@ public interface UserDao {
      */
     User getUserById(Long id);
 
+    /**
+     * 用户列表
+     * @return
+     */
+    List<User> getUserList();
 }
