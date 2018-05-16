@@ -121,5 +121,11 @@
         WHERE id=#{id,jdbcType=BIGINT };
     </update>
 
+    <select id="countList" resultType="java.lang.Integer">
+        SELECT
+        count(1)
+        FROM t_user
+    </select>
+
 
 </mapper>

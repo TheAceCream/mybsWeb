@@ -58,6 +58,16 @@ public class ItemDto {
     private String img;
 
     /**
+     * 综合评分
+     */
+    private Double star;
+
+    /**
+     * 评论数量
+     */
+    private Integer criticCount;
+
+    /**
      * 分页
      */
     private Pager pager;
@@ -142,6 +152,22 @@ public class ItemDto {
         this.img = img;
     }
 
+    public Double getStar() {
+        return star;
+    }
+
+    public void setStar(Double star) {
+        this.star = star;
+    }
+
+    public Integer getCriticCount() {
+        return criticCount;
+    }
+
+    public void setCriticCount(Integer criticCount) {
+        this.criticCount = criticCount;
+    }
+
     public Pager getPager() {
         return pager;
     }
@@ -163,6 +189,8 @@ public class ItemDto {
                 ", sortName='" + sortName + '\'' +
                 ", note='" + note + '\'' +
                 ", img='" + img + '\'' +
+                ", star=" + star +
+                ", criticCount=" + criticCount +
                 ", pager=" + pager +
                 '}';
     }

@@ -60,4 +60,19 @@ public interface ItemService {
      */
     int updateItemStoreAndSale(Long itemId);
 
+    /**
+     * 根据销量排序商品
+     * @param itemDto
+     * @return
+     */
+    List<ItemDto> getItemListBySale(ItemDto itemDto);
+
+
+    /**
+     * 根据评价排序商品
+     * @param itemDto
+     * @return
+     */
+    List<ItemDto> getItemListByStar(ItemDto itemDto);
+
 }

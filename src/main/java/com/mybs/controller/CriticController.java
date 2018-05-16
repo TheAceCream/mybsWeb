@@ -37,6 +37,7 @@ public class CriticController {
     public BaseResultMap addCritic(@RequestBody Critic critic, HttpServletRequest request) {
         BaseResultMap resultMap = new BaseResultMap();
         try {
+            //添加一条评论
             Long criticId = criticService.addCritic(critic);
             resultMap.setData(criticId);
             resultMap.setAPICode(APICode.OK);
@@ -94,6 +95,19 @@ public class CriticController {
             resultMap.setAPICode(APICode.RUNTIME_EXECEPTION);
         }
         return resultMap;
+    }
+
+    /**
+     * 获取评论数
+     * @param request
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "getCriticCount",method = RequestMethod.GET)
+    public String getCriticCount(HttpServletRequest request){
+        CriticDto orderDto = new CriticDto();
+        int count = criticService.countList(orderDto);
+        return count+"";
     }
 
 

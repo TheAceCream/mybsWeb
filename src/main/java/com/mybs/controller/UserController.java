@@ -130,5 +130,11 @@ public class UserController {
         return resultMap;
     }
 
+    @ResponseBody
+    @RequestMapping(value = "getUserCount",method = RequestMethod.GET)
+    public String getCriticCount(HttpServletRequest request){
+        int count = userService.countList();
+        return count+"";
+    }
 
 }

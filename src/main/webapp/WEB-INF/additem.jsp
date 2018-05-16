@@ -97,38 +97,41 @@
             <div class="panel panel-default">
                 <div class="panel-body">
                     <div class="col-md-6">
-                        <form role="form">
+                        <form role="form" method="post" action="/item/addItem.do" enctype="multipart/form-data">
                             <div class="form-group">
                                 <label>商品名称</label>
-                                <input class="form-control" placeholder="商品名称">
+                                <input class="form-control" placeholder="商品名称" name="itemName">
                             </div>
 
                             <div class="form-group">
                                 <label>商品标题</label>
-                                <input class="form-control" placeholder="商品标题">
+                                <input class="form-control" placeholder="商品标题" name="title">
                             </div>
                             <div class="form-group">
                                 <label>商品单价</label>
-                                <input class="form-control" placeholder="商品单价,只允许数字">
+                                <input class="form-control" placeholder="商品单价,只允许数字" name="price">
                             </div>
 
                             <div class="form-group">
                                 <label>商品库存</label>
-                                <input class="form-control" placeholder="库存只允许整数">
+                                <input class="form-control" placeholder="库存只允许整数" name="store">
                             </div>
 
                             <div class="form-group">
                                 <label>商品销售量</label>
-                                <input class="form-control" placeholder="销量只允许整数">
+                                <input class="form-control" placeholder="销量只允许整数" name="sale">
                             </div>
 
                             <div class="form-group">
                                 <label>商品种类</label>
-                                <select class="form-control">
-                                    <option>Option 1</option>
-                                    <option>Option 2</option>
-                                    <option>Option 3</option>
-                                    <option>Option 4</option>
+                                <select class="form-control" name="sort">
+                                    <option value="101">手机</option>
+                                    <option value="102">游戏本</option>
+                                    <option value="103">商务本</option>
+                                    <option value="104">键盘</option>
+                                    <option value="105">鼠标</option>
+                                    <option value="106">耳机</option>
+                                    <option value="107">其他</option>
                                 </select>
                             </div>
 
@@ -145,7 +148,7 @@
 
                             <div class="form-group">
                                 <label>商品简介</label>
-                                <textarea class="form-control" rows="3"></textarea>
+                                <textarea class="form-control" rows="3" name="note"></textarea>
                             </div>
                         <div class="col-md-6">
                             <button type="submit" class="btn btn-primary">添加</button>

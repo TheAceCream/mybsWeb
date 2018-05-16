@@ -97,34 +97,37 @@
             <div class="panel panel-default">
                 <div class="panel-body">
                     <div class="col-md-6">
-                        <form role="form">
+                        <form role="form" method="post" action="/item/updateItem.do" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <input type="hidden" value="${olditem.id }" name="id">
+                            </div>
                             <div class="form-group">
                                 <label>商品名称</label>
-                                <input class="form-control" value="${olditem.itemName }">
+                                <input class="form-control" value="${olditem.itemName }" name="itemName">
                             </div>
 
                             <div class="form-group">
                                 <label>商品标题</label>
-                                <input class="form-control" value="${olditem.title }">
+                                <input class="form-control" value="${olditem.title }" name="title">
                             </div>
                             <div class="form-group">
                                 <label>商品单价</label>
-                                <input class="form-control" value="${olditem.price }">
+                                <input class="form-control" value="${olditem.price }" name="price">
                             </div>
 
                             <div class="form-group">
                                 <label>商品库存</label>
-                                <input class="form-control" value="${olditem.store }">
+                                <input class="form-control" value="${olditem.store }" name="store">
                             </div>
 
                             <div class="form-group">
                                 <label>商品销售量</label>
-                                <input class="form-control" value="${olditem.sale }">
+                                <input class="form-control" value="${olditem.sale }" name="sale">
                             </div>
 
                             <div class="form-group">
                                 <label>商品种类</label>
-                                <select class="form-control">
+                                <select class="form-control" name="sort">
                                     <option value="101">手机</option>
                                     <option value="102">游戏本</option>
                                     <option value="103">商务本</option>
@@ -148,10 +151,10 @@
 
                             <div class="form-group">
                                 <label>商品简介</label>
-                                <textarea class="form-control" rows="3">${olditem.note}</textarea>
+                                <textarea class="form-control" rows="3" name="note">${olditem.note}</textarea>
                             </div>
                             <div class="col-md-6">
-                                <button type="button" class="btn btn-primary">修改</button>
+                                <button type="submit" class="btn btn-primary">修改</button>
                             </div>
                         </form>
                     </div>

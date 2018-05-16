@@ -73,7 +73,6 @@
                 password:$('#managerPsw').val()
             }),
             success: function( data ) {
-
                 if (data.code==0){
                     //跳转到主界面
                    $('#indexform').submit();
@@ -83,10 +82,10 @@
 
             }
         });
-
     })
 
 </script>
+
 
 </body>
 

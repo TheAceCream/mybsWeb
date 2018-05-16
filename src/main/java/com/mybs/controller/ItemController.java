@@ -1,6 +1,7 @@
 package com.mybs.controller;
 
 import com.mybs.dto.ItemDto;
+import com.mybs.enums.ItemTypeEnum;
 import com.mybs.exception.APICode;
 import com.mybs.exception.APIException;
 import com.mybs.po.Item;
@@ -13,7 +14,9 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.awt.event.ItemEvent;
 import java.io.File;
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.UUID;
 
@@ -29,19 +32,35 @@ public class ItemController {
 
     /**
      * 添加商品
-     * @param item
      * @param request
      * @return
      */
-    @ResponseBody
     @RequestMapping(value = "addItem", method = RequestMethod.POST, produces = "application/json")
-    public BaseResultMap addItem(@RequestParam("pictureFile") MultipartFile pictureFile, @RequestBody Item item, HttpServletRequest request) {
+    public String addItem(@RequestParam("pictureFile") MultipartFile pictureFile, HttpServletRequest request) {
         BaseResultMap resultMap = new BaseResultMap();
         try {
             //取得根目录路径
             /**
              * /Users/AceCream/IdeaProjects/mybsweb/target/web-ssm/
              */
+            Item item = new Item();
+            item.setItemName(request.getParameter("itemName"));
+            item.setTitle(request.getParameter("title"));
+            DecimalFormat df = new DecimalFormat("######0.00");
+            String price = request.getParameter("price");
+            String store = request.getParameter("store");
+            String sale = (request.getParameter("sale"));
+            if (price!=null && price!=""){
+                item.setPrice(Double.valueOf(df.format(Double.valueOf(price))));
+            }
+            if (store!=null && store!=""){
+                item.setStore(Integer.valueOf(store));
+            }
+            if (sale!=null && sale!=""){
+                item.setSale(Integer.valueOf(sale));
+            }
+            item.setSort(Integer.valueOf(request.getParameter("sort")));
+            item.setNote(request.getParameter("note"));
             String rootPath = getClass().getResource("../../../../../").getFile().toString() + "img";
             String fileName = "";
             //图片上传！
@@ -70,7 +89,65 @@ public class ItemController {
         } catch (Exception e) {
             resultMap.setAPICode(APICode.RUNTIME_EXECEPTION);
         }
-        return resultMap;
+        return "itemlist";
+    }
+
+    /**
+     * 修改商品信息
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "updateItem", method = RequestMethod.POST, produces = "application/json")
+    public String updateItem(@RequestParam("pictureFile") MultipartFile pictureFile, HttpServletRequest request) {
+        BaseResultMap resultMap = new BaseResultMap();
+        try {
+            Item item = new Item();
+            item.setId(Long.parseLong(request.getParameter("id")));
+            item.setItemName(request.getParameter("itemName"));
+            item.setTitle(request.getParameter("title"));
+            DecimalFormat df = new DecimalFormat("######0.00");
+            String price = request.getParameter("price");
+            String store = request.getParameter("store");
+            String sale = (request.getParameter("sale"));
+            if (price!=null && price!=""){
+                item.setPrice(Double.valueOf(df.format(Double.valueOf(price))));
+            }
+            if (store!=null && store!=""){
+                item.setStore(Integer.valueOf(store));
+            }
+            if (sale!=null && sale!=""){
+                item.setSale(Integer.valueOf(sale));
+            }
+            item.setSort(Integer.valueOf(request.getParameter("sort")));
+            item.setNote(request.getParameter("note"));
+            String rootPath = getClass().getResource("../../../../../").getFile().toString() + "img";
+            String fileName = "";
+            //图片上传！
+            if (!pictureFile.isEmpty()) {
+                //生成uuid作为文件名称
+                String uuid = UUID.randomUUID().toString().replaceAll("-", "");
+                //获得文件类型
+                String contentType = pictureFile.getContentType();
+                //获得文件后缀名称
+                String imageName = contentType.substring(contentType.indexOf("/") + 1);
+                fileName = uuid + "." + imageName;
+                File file = new File(rootPath, fileName);
+                if (!file.exists()) {
+                    file.createNewFile();
+                }
+                pictureFile.transferTo(file);
+                //添加图片地址
+                item.setImg(fileName);
+            }
+            int i = itemService.updateItemById(item);
+            resultMap.setAPICode(APICode.OK);
+        } catch (APIException e) {
+            resultMap.setCode(e.getCode());
+            resultMap.setMsg(e.getMsg());
+        } catch (Exception e) {
+            resultMap.setAPICode(APICode.RUNTIME_EXECEPTION);
+        }
+        return "itemlist";
     }
 
     /**
@@ -85,6 +162,9 @@ public class ItemController {
         BaseResultMap resultMap = new BaseResultMap();
         try {
             ItemDto itemDto = itemService.getItemById(itemId);
+            if (itemDto.getSort()!=null){
+                itemDto.setSortName(ItemTypeEnum.getByCode(itemDto.getSort()).getItemType());
+            }
             resultMap.setData(itemDto);
             resultMap.setAPICode(APICode.OK);
         } catch (APIException e) {
@@ -130,17 +210,41 @@ public class ItemController {
     }
 
     /**
-     * 修改商品信息
-     * @param item
+     * 获取商品列表 通过销量排序 从高到低
+     * @param itemDto
      * @param request
      * @return
      */
     @ResponseBody
-    @RequestMapping(value = "updateItem", method = RequestMethod.POST, produces = "application/json")
-    public BaseResultMap updateItem(@RequestBody Item item, HttpServletRequest request) {
+    @RequestMapping(value = "getItemListBySale", method = RequestMethod.POST, produces = "application/json")
+    public BaseResultMap getItemListBySale(@RequestBody ItemDto itemDto, HttpServletRequest request) {
         BaseResultMap resultMap = new BaseResultMap();
         try {
-            int i = itemService.updateItemById(item);
+            List<ItemDto> itemDtoList = itemService.getItemListBySale(itemDto);
+            resultMap.setData(itemDtoList);
+            resultMap.setAPICode(APICode.OK);
+        } catch (APIException e) {
+            resultMap.setCode(e.getCode());
+            resultMap.setMsg(e.getMsg());
+        } catch (Exception e) {
+            resultMap.setAPICode(APICode.RUNTIME_EXECEPTION);
+        }
+        return resultMap;
+    }
+
+    /**
+     * 获取商品列表 通过评价排序 从高到低
+     * @param itemDto
+     * @param request
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "getItemListByStar", method = RequestMethod.POST, produces = "application/json")
+    public BaseResultMap getItemListByStar(@RequestBody ItemDto itemDto, HttpServletRequest request) {
+        BaseResultMap resultMap = new BaseResultMap();
+        try {
+            List<ItemDto> itemDtoList = itemService.getItemListByStar(itemDto);
+            resultMap.setData(itemDtoList);
             resultMap.setAPICode(APICode.OK);
         } catch (APIException e) {
             resultMap.setCode(e.getCode());
@@ -176,7 +280,13 @@ public class ItemController {
         return resultMap;
     }
 
-
+    @ResponseBody
+    @RequestMapping(value = "getItemCount",method = RequestMethod.GET)
+    public String getCriticCount(HttpServletRequest request){
+        ItemDto itemDto = new ItemDto();
+        int count = itemService.countList(itemDto);
+        return count+"";
+    }
 
 
 

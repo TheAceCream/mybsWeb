@@ -64,4 +64,17 @@ public interface ItemDao {
      */
     int updateItemStoreAndSale(Long itemId);
 
+    /**
+     * 根据销量去排序商品
+     * @param itemDto
+     * @return
+     */
+    List<ItemDto> getItemListBySale(ItemDto itemDto);
+
+    /**
+     * 根据评价去排序商品
+     * @param itemDto
+     * @return
+     */
+    List<ItemDto> getItemListByStar(ItemDto itemDto);
 }

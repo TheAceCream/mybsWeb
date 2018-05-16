@@ -75,5 +75,23 @@ public class ItemServiceImpl implements ItemService{
         return 1;
     }
 
+    @Override
+    public List<ItemDto> getItemListBySale(ItemDto itemDto) {
+        List<ItemDto> itemDtos = itemDao.getItemListBySale(itemDto);
+        for (ItemDto temp : itemDtos) {
+            temp.setSortName(ItemTypeEnum.getByCode(temp.getSort()).getItemType());
+        }
+        return itemDtos;
+    }
+
+    @Override
+    public List<ItemDto> getItemListByStar(ItemDto itemDto) {
+        List<ItemDto> itemDtos = itemDao.getItemListByStar(itemDto);
+        for (ItemDto temp : itemDtos) {
+            temp.setSortName(ItemTypeEnum.getByCode(temp.getSort()).getItemType());
+        }
+        return itemDtos;
+    }
+
 
 }

@@ -52,4 +52,11 @@ public interface UserService {
      * @return
      */
     List<User> getUserList();
+
+    /**
+     * 用户数量
+     * @return
+     */
+    int countList();
+
 }

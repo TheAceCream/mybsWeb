@@ -6,6 +6,7 @@ import com.mybs.dao.UserDao;
 import com.mybs.dto.CriticDto;
 import com.mybs.dto.ItemDto;
 import com.mybs.po.Critic;
+import com.mybs.po.Item;
 import com.mybs.po.User;
 import com.mybs.service.CriticService;
 import com.mybs.utils.UniqueIDUtils;
@@ -55,11 +56,31 @@ public class CriticServiceImpl implements CriticService{
         return criticDao.countList(criticDto);
     }
 
+    /**
+     * 添加评论
+     * @param critic
+     * @return
+     */
     @Override
     public Long addCritic(Critic critic) {
+        Long itemId = critic.getItemId();
+        ItemDto itemDto = itemDao.getItemById(itemId);
+        double star = 0;
+        if (itemDto.getStar()!=null){
+            star = itemDto.getStar();
+        }
+        double old = star * itemDto.getCriticCount();
+        double result = (old+critic.getStar())/(itemDto.getCriticCount()+1);
+        Item item = new Item();
+        item.setId(itemId);
+        item.setCriticCount(itemDto.getCriticCount()+1);
+        item.setStar(result);
         critic.setId(UniqueIDUtils.getUniqueID());
         critic.setCreatTime(new Timestamp(System.currentTimeMillis()));
+        //添加评论
         criticDao.addCritic(critic);
+        //更改商品 表中 评论的分数和数量
+        itemDao.updateItemById(item);
         return critic.getId();
     }
 

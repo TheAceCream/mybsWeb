@@ -9,6 +9,7 @@ import com.mybs.enums.ItemTypeEnum;
 import com.mybs.enums.OrderStateEnum;
 import com.mybs.exception.APICode;
 import com.mybs.exception.APIException;
+import com.mybs.po.Item;
 import com.mybs.po.Order;
 import com.mybs.pub.BaseResultMap;
 import com.mybs.service.ItemService;
@@ -55,9 +56,21 @@ public class OrderController {
             }
             order.setPrice(price);
             order.setName(itemDto.getTitle());
-            Long orderId = orderService.addOrder(order);
-            resultMap.setData(orderId);
-            resultMap.setAPICode(APICode.OK);
+            Integer store = itemDto.getStore();
+            //创建订单之前先检查是否库存足够
+            if (store!=null && store!=0){
+                Long orderId = orderService.addOrder(order);
+                //创建订单后 库存减一 销量加一
+                Item item = new Item();
+                item.setId(itemDto.getId());
+                item.setStore(store-1);
+                item.setSale(itemDto.getSale()+1);
+                itemService.updateItemById(item);
+                resultMap.setData(orderId);
+                resultMap.setAPICode(APICode.OK);
+            }else {
+                throw new Exception();
+            }
         } catch (APIException e) {
             resultMap.setCode(e.getCode());
             resultMap.setMsg(e.getMsg());
@@ -215,6 +228,38 @@ public class OrderController {
         return resultMap;
     }
 
+    /**
+     * sendItem
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "sendItem",method = RequestMethod.GET)
+    public String sendItem(HttpServletRequest request) {
+        try {
+            Long orderId = Long.valueOf(request.getParameter("orderId"));
+            Order order = new Order();
+            order.setId(orderId);
+            order.setState(102);
+            orderService.updateOrderById(order);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "orderlist";
+    }
 
+
+
+    /**
+     * 获取订单数
+     * @param request
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "getOrderCount",method = RequestMethod.GET)
+    public String getOrderCount(HttpServletRequest request){
+        OrderDto orderDto = new OrderDto();
+        int count = orderService.countList(orderDto);
+        return count+"";
+    }
 
 }

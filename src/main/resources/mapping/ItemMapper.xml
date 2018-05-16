@@ -13,6 +13,8 @@
         <result property="sort" column="sort" jdbcType="INTEGER"/>
         <result property="note" column="note" jdbcType="VARCHAR"/>
         <result property="img" column="img" jdbcType="VARCHAR"/>
+        <result property="star" column="star" jdbcType="DOUBLE"/>
+        <result property="criticCount" column="critic_count" jdbcType="INTEGER"/>
     </resultMap>
 
     <sql id="Base_Column_List">
@@ -24,7 +26,9 @@
         sale,
         sort,
         note,
-        img
+        img,
+        star,
+        critic_count
     </sql>
 
     <sql id="whereStatement">
@@ -57,6 +61,20 @@
         <if test="pager != null ">
             limit #{pager.start },#{pager.pageSize }
         </if>
+    </select>
+
+    <select id="getItemListBySale" resultMap="BaseResultMap" parameterType="com.mybs.dto.ItemDto">
+        SELECT <include refid="Base_Column_List"/>
+        FROM t_item
+        <include refid="whereStatement"/>
+        ORDER BY sale DESC
+    </select>
+
+    <select id="getItemListByStar" resultMap="BaseResultMap" parameterType="com.mybs.dto.ItemDto">
+        SELECT <include refid="Base_Column_List"/>
+        FROM t_item
+        <include refid="whereStatement"/>
+        ORDER BY star DESC
     </select>
 
     <select id="countList" parameterType="com.mybs.dto.ItemDto" resultType="java.lang.Integer">
@@ -96,6 +114,7 @@
             <if test="img != null ">
                 img,
             </if>
+            star
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -123,8 +142,9 @@
                 #{note,jdbcType=VARCHAR },
             </if>
             <if test="img != null">
-                #{img,jdbcType=VARCHAR }
+                #{img,jdbcType=VARCHAR },
             </if>
+            0
         </trim>
     </insert>
 
@@ -138,7 +158,7 @@
                 title=#{title,jdbcType=VARCHAR },
             </if>
             <if test="price!=null">
-                sex=#{price,jdbcType=DOUBLE },
+                price=#{price,jdbcType=DOUBLE },
             </if>
             <if test="store!=null">
                 store=#{store,jdbcType=INTEGER },
@@ -153,7 +173,13 @@
                 note=#{note,jdbcType=VARCHAR },
             </if>
             <if test="img!=null">
-                img=#{img,jdbcType=VARCHAR }
+                img=#{img,jdbcType=VARCHAR },
+            </if>
+            <if test="star!=null">
+                star=#{star,jdbcType=DOUBLE },
+            </if>
+            <if test="criticCount!=null">
+                critic_count=#{criticCount,jdbcType=VARCHAR }
             </if>
         </set>
         WHERE id=#{id,jdbcType=BIGINT }

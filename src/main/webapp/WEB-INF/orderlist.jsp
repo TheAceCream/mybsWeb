@@ -164,7 +164,7 @@
                         var temp = "发货";
                         var td = tr.insertCell(tr.cells.length);
                         if (sta==101){
-                            td.innerHTML = "<a href='/order/changeOrderState.do?orderId="+ op +"?state="+ sta +" ' class='btn btn-primary'>"+temp+"</a>";
+                            td.innerHTML = "<a href='/order/sendItem.do?orderId="+ op +" ' class='btn btn-primary'>"+temp+"</a>";
                         }else {
                             td.innerHTML = "<p>"+ obj['stateStr'] +"</p>";
                         }

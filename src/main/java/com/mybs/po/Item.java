@@ -52,6 +52,17 @@ public class Item implements Serializable{
      */
     private String img;
 
+    /**
+     * 综合评分
+     */
+    private Double star;
+
+    /**
+     * 评论数量
+     */
+    private Integer criticCount;
+
+
     public Long getId() {
         return id;
     }
@@ -122,5 +133,21 @@ public class Item implements Serializable{
 
     public void setImg(String img) {
         this.img = img;
+    }
+
+    public Double getStar() {
+        return star;
+    }
+
+    public void setStar(Double star) {
+        this.star = star;
+    }
+
+    public Integer getCriticCount() {
+        return criticCount;
+    }
+
+    public void setCriticCount(Integer criticCount) {
+        this.criticCount = criticCount;
     }
 }

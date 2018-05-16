@@ -17,10 +17,6 @@
     <link href="../css/datepicker3.css" rel="stylesheet">
     <link href="../css/styles.css" rel="stylesheet">
 
-    <!--[if lt IE 9]>
-    <script src="../js/html5shiv.js"></script>
-    <script src="../js/respond.min.js"></script>
-    <![endif]-->
 
 </head>
 
@@ -99,7 +95,7 @@
                         <em class="glyphicon glyphicon-shopping-cart glyphicon-l"></em>
                     </div>
                     <div class="col-sm-9 col-lg-7 widget-right">
-                        <div class="large">120</div>
+                        <div class="large" id="orderCount"></div>
                         <div class="text-muted">订单数</div>
                     </div>
                 </div>
@@ -112,7 +108,7 @@
                         <em class="glyphicon glyphicon-comment glyphicon-l"></em>
                     </div>
                     <div class="col-sm-9 col-lg-7 widget-right">
-                        <div class="large">52</div>
+                        <div class="large" id="criticCount"></div>
                         <div class="text-muted">评论数</div>
                     </div>
                 </div>
@@ -125,7 +121,7 @@
                         <em class="glyphicon glyphicon-user glyphicon-l"></em>
                     </div>
                     <div class="col-sm-9 col-lg-7 widget-right">
-                        <div class="large">24</div>
+                        <div class="large" id="userCount"></div>
                         <div class="text-muted">用户数</div>
                     </div>
                 </div>
@@ -138,7 +134,7 @@
                         <em class="glyphicon glyphicon-stats glyphicon-l"></em>
                     </div>
                     <div class="col-sm-9 col-lg-7 widget-right">
-                        <div class="large">25.2k</div>
+                        <div class="large" id="itemCount"></div>
                         <div class="text-muted">商品数</div>
                     </div>
                 </div>
@@ -184,6 +180,22 @@
     $(window).on('resize', function () {
         if ($(window).width() <= 767) $('#sidebar-collapse').collapse('hide')
     })
+</script>
+
+<script>
+    $.get("/order/getOrderCount.do",function(data){
+        $('#orderCount').html(data)
+    });
+    $.get("/critic/getCriticCount.do",function(data){
+        $('#criticCount').html(data)
+    });
+    $.get("/user/getUserCount.do",function(data){
+        $('#userCount').html(data)
+    });
+    $.get("/item/getItemCount.do",function(data){
+        $('#itemCount').html(data)
+    });
+
 </script>
 </body>
 
